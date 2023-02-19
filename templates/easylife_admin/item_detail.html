@@ -1,0 +1,480 @@
+{% extends "easylife_admin/admin_base.html" %}
+{% block head_title %}Deatils :{{item.title}} {% endblock %}
+{% load date_tag %}
+{% load static %}
+{% block content %}
+<h4 class="font-weight-bold"><strong>{{item.title}}</strong></h4>
+<hr class="red title-hr">
+    <div class="container-fluid">
+
+      <!-- Section: Analytical panel -->
+      <section class="mt-md-4 pt-md-2 mb-5">
+
+        <!-- First row -->
+        <div class="row">
+
+          <!-- First column -->
+          <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+              <!-- Card Data -->
+              <div class="admin-up">
+                 <i class="fas fa-rupee-sign success-color mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase">Sales</p>
+                  <h4 class="font-weight-bold "> ₹  {{earn_from_item}}</h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <div class="progress mb-3">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: {{percentage}}%" aria-valuenow="{{percentage}}"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="card-text">Share from Total Earning ({{percentage}}%)</p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- First column -->
+
+          <!-- Second column -->
+          <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+              <!-- Card Data -->
+              <div class="admin-up">
+                <i class="fas fa-chart-line warning-color mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase">Subscriptions</p>
+                  <h4 class="font-weight-bold ">{{user_purchased}}</h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <div class="progress mb-3">
+                  <div class="progress-bar red accent-2" role="progressbar" style="width: 25%" aria-valuenow="25"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="card-text">Worse than last week (25%)</p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Second column -->
+
+          <!-- Third column -->
+          <div class="col-xl-4 col-md-6 mb-md-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+       <!-- Card Data -->
+              <div class="admin-up">
+                <i class="fas fa-star light-blue lighten-1 mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase">Ratings</p>
+                  <h4 class="font-weight-bold ">{{avrage_rating}}</h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <div class="progress mb-3">
+                  <div class="progress-bar green accent-2" role="progressbar" style="width: {{avrage_rating_percentage}}%" aria-valuenow="{{avrage_rating_percentage}}"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="card-text">Ratings ({{avrage_rating_percentage}}%)</p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Third column -->
+
+
+        </div>
+        <!-- First row -->
+
+      </section>
+      <!-- Section: Analytical panel -->
+
+      <!-- Section: data tables -->
+      <section class="pb-3">
+
+        <!-- Grid row -->
+        <div class="row">
+
+
+          <!-- Grid column -->
+          <div class="col-lg-9 col-md-12">
+
+            <!-- Panel -->
+            <div class="card mb-4">
+
+              <div class="card-header white-text primary-color">
+                <h3 class="font-weight-500 my-1">
+                  
+                  
+                  <i class="far fa-comments"></i>  Reviews Section ({{messages_item|length}}) </h3>
+              </div>
+
+              <div class="card-body">
+
+
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Title</th>
+                      <th>Ratings</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for review in messages_item %}
+                          <tr>
+                            <td>
+                              <div class="avatar-placeholder blue darken-3">{{review.user.get_full_name|slice:":1"}}</div> {{review.user.get_full_name}}
+                            </td>
+                            <td>{{review.body}}</td>
+                            <td>{{review.rating}}</td>
+                            <td><span class="grey-text"><small><i class="far fa-clock-o"></i> {{ review|date_str_output }}</small></span></td>
+                          </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              </div>
+
+          </div>
+            <!-- Panel -->
+
+            <!-- Panel -->
+
+
+
+
+
+          <div class="card mb-lg-0 mb-2">
+
+              <div class="card-header white-text purple">
+                <h5 class="font-weight-500 my-1">Quantity Sold
+                           <div class="btn-group float-right">
+                            <a  class="btn  btn-sm btn-success active" onclick="data_of_this_year()">2021</a>
+                            <a  class="btn btn-sm btn-success" onclick="data_of_last_year()">2020</a>
+                      </div
+                </h5>
+              </div>
+
+              <div class="card-body">
+                    <canvas id="myChart" width="400" height="200"></canvas>
+            
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div class="col-lg-3 col-md-12">
+
+            <div class="card text-center mb-4 pt-4 pb-3 red accent-2 white-text">
+              <i class="fas fa-bell fa-3x mb-3"></i>
+              <h4 class="h4-responsive">{{required_items}} More Required </h4>
+            </div>
+                     <div class="card text-center mb-4 pt-4 pb-3 black accent-2 white-text">
+
+                      <a href="{% url 'easylife_admin:itemupdateview' item.id %}">
+              <i class="fas fa-pencil-alt fa-3x mb-3"></i></a>
+              <h4 class="h4-responsive"><b>Edit The Item </b></h4>
+            </div>
+
+              <div class="card text-center mb-4 pt-4 pb-3 orange accent-2 red-text">
+
+             <button type="button" class="btn mb-3" data-toggle="modal" data-target="#centralModalFluidSuccessDemo">
+             
+
+
+
+              <i class="fas fa-eye fa-3x mb-3"></i> </button>
+              <h4 class="h4-responsive"><b>View  Item </b></h4>
+            </div>
+
+            <div class="row">
+
+              <!-- Grid column -->
+              <div class="col-md-12 mb-md-0 mb-4">
+
+                <!-- Panel -->
+                <div class="card">
+
+                  <div class="card-header white-text grey darken-1">
+                    <h5 class="font-weight-500 my-1">Orders</h5>
+                  </div>
+
+                  <h6 class="ml-4 mb-0 pt-4  font-weight-bold"><i class="fas fa-arrow-up blue-text mr-3"
+                      aria-hidden="true"></i> 2000 </h6>
+
+                  <div class="card-body">
+                    <div class="progress">
+                      <div class="progress-bar bg-primary" role="progressbar" style="width: 45%" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <p class="font-small grey-text mt-3 mb-0">Better than last week (25%)</p>
+                  </div>
+
+                </div>
+                <!-- Panel -->
+
+              </div>
+              <!-- Grid column -->
+
+            </div>
+            <!-- Grid row -->
+
+          </div>
+          <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+      </section>
+      <!-- Section: data tables -->
+
+    </div>
+  <script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'April', 'June', 'Juily','Aug','Sept','Oct','Nov','Dec'],
+        datasets: [{
+            label: '# of Quantity Sold',
+            data: {{this_year_item_sale|safe}},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)',
+               'rgba(66, 133, 244, 0.3)',
+                'rgba(66, 133, 244, 0.4)',
+                'rgba(66, 133, 244, 0.5)',
+                'rgba(66, 133, 244, 0.6)',
+                'rgba(66, 133, 244, 0.7)',
+                'rgba(66, 133, 244, 0.8)',
+                'rgba(66, 133, 244, 0.9)',
+                'rgba(66, 133, 244, 1)',
+                'rgba(66, 133, 244, 0.9)',
+                'rgba(66, 133, 244, 0.5)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 1)',
+      
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(66, 133, 244, 0.3)',
+                'rgba(66, 133, 244, 0.4)',
+                'rgba(66, 133, 244, 0.5)',
+                'rgba(66, 133, 244, 0.6)',
+                'rgba(66, 133, 244, 0.7)',
+                'rgba(66, 133, 244, 0.8)',
+                'rgba(66, 133, 244, 0.9)',
+                'rgba(66, 133, 244, 1)',
+                'rgba(66, 133, 244, 0.9)',
+                'rgba(66, 133, 244, 0.5)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 0.2)',
+                'rgba(66, 133, 244, 1)',
+
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+
+function data_of_this_year() {
+  myChart.data.datasets[0].data={{this_year_item_sale|safe}};
+  myChart.update();
+
+};
+
+function data_of_last_year() {
+  myChart.data.datasets[0].data={{last_year_item_sale|safe}};
+  myChart.update();
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+        <!-- Central Modal Fluid Success -->
+        <div class="modal fade" id="centralModalFluidSuccessDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-fluid modal-notify modal-primary" role="document">
+            <!-- Content -->
+            <div class="modal-content">
+              <!-- Header -->
+              <div class="modal-header">
+                <p class="heading lead">{{item.title}} View</p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+              </div>
+
+              <!-- Body -->
+              <div class="modal-body">
+                    <div class="container dark-grey-text mt-5">
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+
+
+          <div class="col-md-6 mb-4">
+
+
+
+              <img src="{{ item.image.url }}" 
+              alt="Lightbox image 1" class="img-fluid w-100" id='product_image' height="225" width="225">
+
+              <nav>
+                <p></p>
+              <ul class="pagination pg-blue">
+
+                <!-- Numbers -->
+                {% for  image_url in  images_list %}
+
+                <li id='image{{forloop.counter}}' class="page-item {% if  forloop.counter == 1%}active{% endif %}" data='{{image_url}}'><a class="page-link waves-effect waves-effect" >{{forloop.counter }}</a></li>
+                {% endfor %}
+   
+
+        
+   
+              </ul>
+            </nav>
+
+        
+
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <!--Content-->
+          <div class="p-4">
+
+            <div class="mb-3">
+              <a href="">
+                <span class="badge purple mr-1">{{ item.get_category_display }}</span>
+              </a>
+            </div>
+
+
+         <p class="lead">
+         {% if item.discount_price %}
+              <span class="mr-1">
+                <del>₹{{item.price}}</del>
+              </span>
+                  
+            <span>₹{{item.discount_price }}</span>     
+          {% else %} 
+            <span>₹{{ item.price }}</span>
+          {% endif %}     
+            </p>
+
+
+
+            <p class="lead font-weight-bold">{{item.title}}</p>
+                              <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p " >Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+      
+              <p></p>
+              <a href="{{ item.get_remove_to_cart_url }}" class="btn btn-danger btn-md my-0 p  " >Remove from Cart
+              </a>
+              </div>
+
+            </div>
+
+              
+            <div class="jumbotron btn-light col-md-12 ">
+            <h1 class="display-5">Description</h1>
+            <hr>
+            <br>
+          {% autoescape off %}
+              
+
+
+              {{ item.description|linebreaks }}
+            {% endautoescape %} 
+            
+            </div>
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+              </div>
+
+              <!-- Footer -->
+              <div class="modal-footer">
+                <a type="button" class="btn btn-danger btn-block waves-effect" data-dismiss="modal" style="font-size:200%">Close</a>
+              </div>
+            </div>
+            <!-- Content -->
+          </div>
+        </div>
+
+{% endblock content %}
+

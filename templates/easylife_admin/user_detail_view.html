@@ -1,0 +1,356 @@
+{% extends "easylife_admin/admin_base.html" %}
+{% block head_title %}User Deatils {{user.get_full_name}}{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid">
+
+      <!-- Section: Intro -->
+      <section class="mt-md-4 pt-md-2 mb-5 pb-4">
+
+        <!-- Grid row -->
+        <div class="row">
+
+          <!-- Grid column -->
+          <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+              <!-- Card Data -->
+              <div class="admin-up">
+                <i class="fas fa-rupee-sign success-color mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase"></p>
+                  <h4 class="font-weight-bold dark-grey-text">₹ {{earn_money}}</h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <p class="card-text">Earn From <span class="blue-text">{{user.get_full_name}}</span></p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-xl-4 col-md-6 mb-xl-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+              <!-- Card Data -->
+              <div class="admin-up">
+                <i class="fas fa-chart-line warning-color mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase"></p>
+                  <h4 class="font-weight-bold dark-grey-text">{{item_purchased}}</h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <p class="card-text">Products Purchased <span class="blue-text">{{user.get_full_name}}</span></p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+          <!-- Grid column -->
+          <div class="col-xl-4 col-md-6 mb-md-0 mb-4">
+
+            <!-- Card -->
+            <div class="card card-cascade cascading-admin-card">
+
+              <!-- Card Data -->
+              <div class="admin-up">
+                <i class="fas fa-check-double danger-color lighten-1 mr-3 z-depth-2"></i>
+                <div class="data">
+                  <p class="text-uppercase"></p>
+                  <h4 class="font-weight-bold danger-grey-text">
+                    <span class="red-text">{{no_verified}}</span>
+
+                  </h4>
+                </div>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body card-body-cascade">
+                <p class="card-text">Order To Be Verified</p>
+              </div>
+
+            </div>
+            <!-- Card -->
+
+          </div>
+          <!-- Grid column -->
+
+
+
+        </div>
+        <!-- Grid row -->
+
+      </section>
+      <!-- Section: Intro -->
+
+      <!-- Section: Main panel -->
+      <section class="mb-5">
+
+        <!-- Card -->
+        <div class="card card-cascade narrower">
+
+
+          <!-- Section: Table -->
+          <section>
+
+            <!-- Top Table UI -->
+            <br>
+
+            <div class="card card-cascade narrower z-depth-0">
+
+              <div
+                class="view view-cascade gradient-card-header blue-gradient narrower py-2 mx-4 mb-3 d-flex justify-content-between align-items-center">
+
+
+                <a href="" class="white-text mx-3">Orders By {{ user.get_full_name }}</a>
+
+              </div>
+
+              <div class="px-4">
+
+                <div class="table-responsive">
+
+                  <!--Table-->
+                  <table class="table table-hover mb-0">
+
+                    <!-- Table head -->
+                    <thead>
+                      <tr>
+                        <th class="th-lg"># Order No</th>
+                        <th class="th-lg"># Shipment No</th>
+                        <th class="th-lg">Verification Status</th>
+                        <th class="th-lg">Order Delivered </th>
+                        <th class="th-lg">Payment Done</th>
+                        <th class="th-lg">Order Complete</th>
+                      </tr>
+                    </thead>
+                    <!-- Table head -->
+
+                    <!-- Table body -->
+                    <tbody>
+                      {% for row in shippment_order_user %}
+                      
+                
+                      <tr>
+                        <td>
+
+                       <a href="{% url 'easylife_admin:order-review' row.order.id row.id user.id %}" style="color:white">
+                            <button type="button" class="btn btn-info btn-sm px-3">
+                              <b style="font-size:170%">{{row.order.id}}</b>
+                            </button>
+                      </a>
+
+
+                        
+
+                      </td>
+                        <td>
+                        <a href='{% url 'easylife_admin:order-review' row.order.id row.id user.id %}' style="color:white">
+                            <button type="button" class="btn btn-brown waves-effect waves-light btn-sm px-3">
+                              <b style="font-size:170%">{{row.id}}</b>
+                            </button>
+                      </a>
+
+
+                        
+
+                      </td>
+                        <td>
+
+                          {% if  row.verify_order %}
+                          <p  class="fs-6 text-muted" style="font-size:80%;margin-bottom:0;">{{row.verify_done_date}}</p>
+                          <button type="button" class="btn btn-success btn-sm px-3">
+                              <i class="far fa-check-circle fa-2x"></i>
+                            </button>  
+                          {% else %}
+                                <button type="button" class="btn btn-danger btn-sm px-3">
+                             <i class="far fa-times-circle fa-2x"></i>
+                            </button>  
+                          {% endif %}
+         
+
+         
+
+                      </td>
+                        <td>
+
+                                {% if  row.delivered %}
+                                <p  class="fs-6 text-muted" style="font-size:80%;margin-bottom:0;">{{row.delivered_done_date}}</p>
+                                  <button type="button" class="btn btn-success btn-sm px-3">
+                                      <i class="far fa-check-circle fa-2x"></i>
+                                      </button> 
+                                {% else %}
+                                    <button type="button" class="btn btn-danger btn-sm px-3">
+                                      <i class="far fa-times-circle fa-2x"></i>
+                                    </button> 
+                                
+
+                                {% endif %}
+
+
+                        </td>
+                        <td>
+                         {% if  row.payment_done %}
+                         <p  class="fs-6 text-muted" style="font-size:80%;margin-bottom:0;">{{row.payment_done_date}}</p>
+                          <button type="button" class="btn btn-success btn-sm px-3">
+                              <i class="far fa-check-circle fa-2x"></i>
+                            
+                          {% else %}
+                                <button type="button" class="btn btn-danger btn-sm px-3">
+                             <i class="far fa-times-circle fa-2x"></i>
+                            </button>  
+                          {% endif %}
+
+                        </td>
+                        <td>{% if  row.payment_done_date %}
+                          <button type="button" class="btn btn-success btn-sm px-3">
+                              <i class="far fa-check-circle fa-2x"></i>
+                            
+                          {% else %}
+                                <button type="button" class="btn btn-danger btn-sm px-3">
+                             <i class="far fa-times-circle fa-2x"></i>
+                          </button>  
+                          {% endif %}
+                            
+
+
+
+
+
+
+
+
+                        </td>
+                      </tr>
+
+
+                      {% empty %}
+                                   <tfoot class="table-dark">
+                                      <tr>
+                                        <th colspan="5">
+
+                                          {{user.get_full_name}} Not have active Orders Yet
+                                        </th>
+                          
+                                      </tr>
+                                    </tfoot>
+
+                      {% endfor %}
+ 
+                    </tbody>
+                    <!-- Table body -->
+
+                  </table>
+                  <!-- Table -->
+
+                </div>
+
+                <hr class="my-0">
+
+              </div>
+
+            </div>
+
+          </section>
+          <!--Section: Table-->
+
+        </div>
+        <!-- Card -->
+
+      </section>
+      <!-- Section: Main panel -->
+
+      <!-- Section: Cascading panels -->
+      <section class="mb-5">
+
+        <!-- Grid row -->
+        <div class="row">
+
+          <!-- Grid column -->
+          <div class="col-lg-6 col-md-12 mb-lg-0 mb-4">
+
+            <!-- Panel -->
+            <div class="card">
+
+              <div class="card-header white-text primary-color">
+                Other  Personal Details 
+              </div>
+
+              <div class="card-body text-center px-4 mb-3">
+                <div class="list-group list-panel">
+                  <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    <span class="float-left" style="font-weight: bold">Name :</span>{{user.get_full_name}}
+                  </span>
+                  <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    <span class="float-left" style="font-weight: bold">Contact Number:</span>{{last_order.order.billing_address.phone_number}}
+                  </span>
+                  <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    <span class="float-left" style="font-weight: bold">Email:</span>{{user.email}}
+                  </span>
+                  <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    <span class="float-left" style="font-weight: bold">Payment Method :</span>{{last_order.order.billing_address.get_payment_option_display}}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+            <!-- Panel -->
+
+          </div>
+          <!-- Grid column -->
+          <div class="col-lg-6 col-md-12 mb-lg-0 mb-4">
+
+            <!-- Panel -->
+            <div class="card">
+
+              <div class="card-header white-text primary-color">
+                Address Details 
+              </div>
+
+              <div class="card-body text-center px-4 mb-3">
+                <div class="list-group list-panel">
+                  <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    {{last_order.order.billing_address.street_address}}
+                  </span>
+                     <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    {{last_order.order.billing_address.apartment_address}}
+                  </span>
+
+                    <span  class="list-group-item d-flex justify-content-between dark-grey-text">
+                    <span class="float-left" style="font-weight: bold">PIN CODE  : {{last_order.order.billing_address.pin_code}}</span>
+                  </span>
+                </div>
+              </div>
+
+            </div>
+            <!-- Panel -->
+
+          </div>>
+
+
+        </div>
+        <!-- Grid row -->
+
+      </section>
+      <!--Section: Cascading panels-->
+
+
+
+    </div>
+{% endblock content %}
